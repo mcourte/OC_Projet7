@@ -85,16 +85,18 @@ def generate_combinations(actions_updated):
     # Itération de toutes les combinaisons:
     # On considère que chaque entier i représente une combinaison unique
     # Un entier i de 0 à 2^n - 1 représente une combinaison possible. ( 2 ** n = 0 à 2^n)
-    for i in range(0, 2 ** n):
+    for i in range(1, 2 ** n):
+        combination = []
         for j in range(0, n):
             # L'opérateur ">>" permet le décalage vers la droite. Il déplace les bits de i vers la droite de j position
             # (i >> j) donne une valeur de 1 ou 0. Si == 1 , alors le j-nième élement est inclus dans la combinaison.
             # L'opérateur "& 1" ne modifie que le dernier bit de i. Ce qui permet de lister TOUTES les combinaisons
             if (i >> j) & 1:
-                combination = actions_updated[j]
-                # Ajout de la combinaison à la liste all_combinations
-                all_combinations.append(combination)
-    print(len(all_combinations))
+                combination.append(actions_updated[j])
+        # Ajout de la combinaison à la liste all_combinations
+        all_combinations.append(combination)
+
+    print(" Le nombre total de combinaisons possibles est: ", len(all_combinations))
     return all_combinations
 
 
@@ -127,17 +129,19 @@ def meilleur_profit(all_combinaison):
     return best_combinaison, best_profit, best_cost
 
 
-def test_total(actions_updated):
-    start = time.time()
+def diplay_best_combination(actions_updated):
+    print("Début du programme")
 
+    start = time.time()
     all_combinaison = generate_combinations(actions_updated)
     best_combinaison, max_profit, cout_total = meilleur_profit(all_combinaison)
-    print("Combinaison: ", best_combinaison)
-    print("Profit total: ", max_profit)
-    print("Coût total:", cout_total)
-    print('Fin du programme')
+
+    print("La meilleure combinaison est la suivante:\n", best_combinaison)
+    print("Le profit total de cette combinaison est: ", max_profit, "€")
+    print("le coût total d'achat des actions de la combinaison est: ", cout_total, "€")
+
     end_time = (time.time() - start)
-    print(convert(end_time))
+    print("Fin du programme: ", convert(end_time))
 
 
-generate_combinations(actions_updated)
+diplay_best_combination(actions_updated)
