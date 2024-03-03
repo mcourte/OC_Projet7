@@ -76,94 +76,62 @@ def nombre_combinaisons(n):
 # Faire la liste des combinaisons
 # On doit faire: A1+A2, A1+A3,... A2+A3, A2+A4..., A1+A2+A3...
 
-# Décomposition du nombre de combinaisons
 
-# Nombre de combinaisons de 2 actions : 190
-# Nombre de combinaisons de 3 actions : 1140
-# Nombre de combinaisons de 4 actions : 4845
-# Nombre de combinaisons de 5 actions : 15504
-# Nombre de combinaisons de 6 actions : 38760
-# Nombre de combinaisons de 7 actions : 77520
-# Nombre de combinaisons de 8 actions : 125970
-# Nombre de combinaisons de 9 actions : 167960
-# Nombre de combinaisons de 10 actions : 184756
-# Nombre de combinaisons de 11 actions : 167960
-# Nombre de combinaisons de 12 actions : 125970
-# Nombre de combinaisons de 13 actions : 77520
-# Nombre de combinaisons de 14 actions : 38760
-# Nombre de combinaisons de 15 actions : 15504
-# Nombre de combinaisons de 16 actions : 4845
-# Nombre de combinaisons de 17 actions : 1140
-# Nombre de combinaisons de 2 actions : 190
-# Nombre de combinaisons de 19 actions : 20
-# Nombre de combinaisons de 20 actions : 1
-
-
-def generate_combinations(actions_updated):
+def dynamique_best_combinaisons(actions_updated, budget_max):
     n = len(actions_updated)
-    all_combinations = []
+    dp = [[0 for _ in range(budget_max + 1)] for _ in range(n + 1)]
+    selected_actions = [[[] for _ in range(budget_max + 1)] for _ in range(n + 1)]
 
-    # Fonction récursive pour générer les combinaisons
+    for i in range(1, n + 1):
+        action = actions_updated[i - 1]  # Access the current action
+        for j in range(1, budget_max + 1):
+            if int(action['Cost']) <= j:  # Convert to int assuming the cost is a string
+                if (
+                    float(action['Valeur_du_profit']) + dp[i - 1][j - int(action['Cost'])]
+                    > dp[i - 1][j]
+                ):
+                    dp[i][j] = float(action['Valeur_du_profit']) + dp[i - 1][j - int(action['Cost'])]
+                    selected_actions[i][j] = selected_actions[i - 1][j - int(action['Cost'])] + [action['Action']]
+                else:
+                    dp[i][j] = dp[i - 1][j]
+                    selected_actions[i][j] = selected_actions[i - 1][j]
+            else:
+                dp[i][j] = dp[i - 1][j]
+                selected_actions[i][j] = selected_actions[i - 1][j]
 
-    def generate_helper(current_combination, index):
-        if index == n:
-            all_combinations.append(current_combination.copy())
-            return
-
-        # Inclure l'élément actuel dans la combinaison
-        current_combination.append(actions_updated[index])
-        generate_helper(current_combination, index + 1)
-
-        # Ne pas inclure l'élément actuel dans la combinaison
-        current_combination.pop()
-        generate_helper(current_combination, index + 1)
-
-    # Appel initial avec une liste vide et l'indice de départ 0
-    generate_helper([], 0)
-
-    return all_combinations
+    # Find the optimal combination
+    optimal_combination = selected_actions[n][budget_max]
+    return optimal_combination, dp[n][budget_max]
 
 
-def profit_cout_combinaison(combinaison):
-    '''Calcule le coût et le profit d'une combinaison'''
-    # Variables
+def profit_cout_combinaison(actions_updated, budget_max):
+    optimal_combination, _ = dynamique_best_combinaisons(actions_updated, budget_max)
+
     cout_total = 0
     total_profit = 0
-    # Fonction
-    for action in combinaison:
-        cout_total += float(action['Cost'])
-        total_profit += float(action['Valeur_du_profit'])
-    return total_profit, cout_total
+
+    for action_name in optimal_combination:
+        for action in actions_updated:
+            if action['Action'] == action_name:
+                cout_total += float(action['Cost'])
+                total_profit += float(action['Valeur_du_profit'])
+                break  # Une fois que la correspondance est trouvée, sortez de la boucle interne
+
+    return optimal_combination, total_profit, cout_total
 
 
-def meilleur_profit(all_combinaison):
-    '''Trouve le meilleur profit, en respectant la contrainte du budget max'''
-    '''return : la meilleure des combinaisons'''
-    # On initie le profit max à la première combinaison
-    best_combinaison = []
-    best_profit = 0
-    best_cost = 0
-    for combinaison in all_combinaison:
-        total_profit, cout_total = profit_cout_combinaison(combinaison)
-        # On compare à tous les total_profit de chaque combinaison jusqu'à trouver le plus grand
-        if float(cout_total) <= budget_max and float(total_profit) > best_profit:
-            best_combinaison = combinaison
-            best_profit = total_profit
-            best_cost = cout_total
-    return best_combinaison, best_profit, best_cost
+def diplay_best_combination(actions_updated):
+    print("Début du programme")
 
-
-def test_total(actions_updated):
     start = time.time()
 
-    all_combinaison = generate_combinations(actions_updated)
-    best_combinaison, max_profit, cout_total = meilleur_profit(all_combinaison)
-    print("Combinaison: ", best_combinaison)
-    print("Profit total: ", max_profit)
-    print("Coût total:", cout_total)
-    print('Fin du programme')
+    best_combinaison, max_profit, cout_total = profit_cout_combinaison(actions_updated, budget_max)
+    print("La meilleure combinaison est la suivante:\n", best_combinaison)
+    print("Le profit total de cette combinaison est: ", max_profit, "€")
+    print("le coût total d'achat des actions de la combinaison est: ", cout_total, "€")
+
     end_time = (time.time() - start)
-    print(convert(end_time))
+    print("Fin du programme: ", convert(end_time))
 
 
-test_total(actions_updated)
+diplay_best_combination(actions_updated)
