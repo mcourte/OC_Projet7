@@ -139,5 +139,5 @@ def diplay_best_combination(file_path):
     print("Fin du programme: ", convert(end_time))
 
 
-file_path = "data/dataexo1.csv"
+file_path = "data/dataset2.csv"
 diplay_best_combination(file_path)

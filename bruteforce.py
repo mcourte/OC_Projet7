@@ -5,11 +5,12 @@ import time
 
 # Fonction permettant de convertir le temps d'exécution de secondes en HH:MM:SS
 
-def convert(seconds):
-    ''' La fonction permet de convertir les secondes en HH/MM/SS afin d'avoir un timing plus clair '''
+def convert(milliseconds):
+    ''' La fonction permet de convertir les millisecondes en HH/MM/SS/MS afin d'avoir un timing plus clair '''
+    seconds, milliseconds = divmod(milliseconds, 1000)
     min, sec = divmod(seconds, 60)
     hour, min = divmod(min, 60)
-    return '%d:%02d:%02d' % (hour, min, sec)
+    return '%d:%02d:%02d:%03d' % (hour, min, sec, milliseconds)
 
 
 # Budget max
@@ -28,8 +29,8 @@ with open(file_path, 'r') as csv_file:
 
 for action in actions_list:
     result_profit = int(action['Cost']) * (int(action['Profit']) * 1/100)
-    action["Result_after_profit"] = int(action['Cost']) + result_profit
-    action['Valeur_du_profit'] = result_profit
+    action["Result_after_profit"] = round(int(action['Cost']) + result_profit, 2)
+    action['Valeur_du_profit'] = round(result_profit, 2)
 
 # Mise à jour du csv
 
@@ -124,8 +125,8 @@ def meilleur_profit(all_combinaison):
         # On compare à tous les total_profit de chaque combinaison jusqu'à trouver le plus grand
         if float(cout_total) <= budget_max and float(total_profit) > best_profit:
             best_combinaison = combinaison
-            best_profit = total_profit
-            best_cost = cout_total
+            best_profit = round(total_profit, 2)
+            best_cost = round(cout_total, 2)
     return best_combinaison, best_profit, best_cost
 
 
