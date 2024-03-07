@@ -14,9 +14,9 @@ def convert(seconds):
 
 
 # Budget max
-budget_max = 500
+budget_max = 500*100
 
-file_path = "data/dataexo1.csv"
+file_path = "data/dataset1.csv"
 actions_list = []
 actions_updated = []
 
@@ -27,9 +27,11 @@ with open(file_path, 'r') as csv_file:
 
 # Calcul de la valeur de l'action après bénéfice
 
-    for action in actions_list:
-        if float(action['price']) >= 0 and float(action['profit']) >= 0:
-            action['profit'] = ((float(action['price'])) * (((float(action['profit'])))) / 100)
+for action in actions_list:
+    if float(action['price']) >= 0 and float(action['profit']) >= 0:
+        action['price'] = int((float(action['price'])) * 100)
+        action['profit'] = int(round(((((float(action['price'])) * ((float(action['profit'])))) / 100)) * 100, 2))
+
 
 # Mise à jour du csv
 
@@ -45,7 +47,6 @@ with open(file_path_new, 'r') as csv_file:
     data = csv.DictReader(csv_file)
     for row in data:
         actions_updated.append(dict(row))
-
 
 # On cherche à calculer toutes les possibilités de combinaisons,
 # Calcul des combinaisons
@@ -109,7 +110,7 @@ def profit_cout_combinaison(combinaison):
     # Fonction
     for action in combinaison:
         cout_total += float(action['price'])
-        total_profit += float(action['profit'])
+        total_profit += (float(action['profit']))
     return total_profit, cout_total
 
 
@@ -125,8 +126,8 @@ def meilleur_profit(all_combinaison):
         # On compare à tous les total_profit de chaque combinaison jusqu'à trouver le plus grand
         if float(cout_total) <= budget_max and float(total_profit) > best_profit:
             best_combinaison = combinaison
-            best_profit = round(total_profit, 2)
-            best_cost = round(cout_total, 2)
+            best_profit = round(total_profit * 1/100, 2)
+            best_cost = round(cout_total * 1/100, 2)
     return best_combinaison, best_profit, best_cost
 
 

@@ -5,12 +5,12 @@ import time
 
 # Fonction permettant de convertir le temps d'exécution de secondes en HH:MM:SS
 
-def convert(milliseconds):
-    ''' La fonction permet de convertir les millisecondes en HH/MM/SS/MS afin d'avoir un timing plus clair '''
-    seconds, milliseconds = divmod(milliseconds, 1000)
-    min, sec = divmod(seconds, 60)
-    hour, min = divmod(min, 60)
-    return '%d:%02d:%02d:%03d' % (hour, min, sec, milliseconds)
+def convert(seconds):
+    ''' La fonction permet de convertir les secondes en HH/MM/SS/SSS afin d'avoir un timing plus clair '''
+    hours, remainder = divmod(seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    milliseconds = int((seconds - int(seconds)) * 1000)  # Extrait les millisecondes
+    return '%02d:%02d:%02d:%03d' % (hours, minutes, int(seconds), milliseconds)
 
 
 def update_actions(file_path):
