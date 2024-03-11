@@ -128,9 +128,11 @@ def diplay_best_combination(file_path):
     budget_max = 500 * 100
     # Fonction
     print("Début du programme")
+
     start = time.time()
     actions_list = update_actions(file_path)
     best_combinaison, max_profit, cout_total = profit_cout_combinaison(actions_list, budget_max)
+
     print("La meilleure combinaison est la suivante:\n", best_combinaison)
     print("Le profit total de cette combinaison est: ", max_profit, "€")
     print("le coût total d'achat des actions de la combinaison est: ", cout_total, "€")

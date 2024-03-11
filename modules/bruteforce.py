@@ -129,9 +129,10 @@ def meilleur_profit(all_combinaison, budget_max):
 
 
 def diplay_best_combination(file_path):
-    print("Début du programme")
-
+    # Variables
     budget_max = 500
+    # Fonction
+    print("Début du programme")
     start = time.time()
     actions_updated = update_data(file_path)
     all_combinaison = generate_combinations(actions_updated)
