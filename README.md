@@ -24,9 +24,9 @@ python3 main.py
 
 ## Etape 4 : Utilisation du programme
 
-Plusieurs choix s'offre à vous.  
-En premier, calcul de la meilleure combinaison à partir d'une liste de 20 actions en utilisant "bruteforce",  
-En second, calcul de la meilleure combinaison à partir d'une liste de 20 actions en utilisant "optimized",  
-Puis, calcul de la meilleure combinaison du Set 1 de Sienna avec "optimized",  
-Calcul de la meilleure combinaison du Set 2 de Sienna avec "optimized",  
-Et pour terminer, calcul de la meilleure combinaison du Set 1 de Sienna avec "bruteforce".  
+Plusieurs choix s'offrent à vous.  
+1. Calcul de la meilleure combinaison à partir d'une liste de 20 actions en utilisant "bruteforce",  
+2. Calcul de la meilleure combinaison à partir d'une liste de 20 actions en utilisant "optimized",  
+3. Calcul de la meilleure combinaison du Set 1 de Sienna avec "optimized",  
+4. Calcul de la meilleure combinaison du Set 2 de Sienna avec "optimized",  
+5. Calcul de la meilleure combinaison du Set 1 de Sienna avec "bruteforce".  
