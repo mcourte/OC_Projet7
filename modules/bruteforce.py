@@ -1,9 +1,10 @@
 import csv
 import math
 import time
-
+import psutil
 
 # Fonction permettant de convertir le temps d'exécution de secondes en HH:MM:SS
+
 
 def convert(seconds):
     ''' La fonction permet de convertir les secondes en HH/MM/SS/SSS afin d'avoir un timing plus clair '''
@@ -132,6 +133,7 @@ def diplay_best_combination(file_path):
     # Variables
     budget_max = 500
     # Fonction
+
     print("Début du programme")
     start = time.time()
     actions_updated = update_data(file_path)
@@ -140,7 +142,8 @@ def diplay_best_combination(file_path):
 
     print("La meilleure combinaison est la suivante:\n", best_combinaison)
     print("Le profit total de cette combinaison est: ", max_profit, "€")
-    print("le coût total d'achat des actions de la combinaison est: ", cout_total, "€")
-
+    print("Le coût total d'achat des actions de la combinaison est: ", cout_total, "€")
+    process = psutil.Process()
+    print(f"Utilisation de la mémoire : {process.memory_info().rss / (1024 * 1024):.2f} MiB")
     end_time = (time.time() - start)
     print("Fin du programme: ", convert(end_time))
