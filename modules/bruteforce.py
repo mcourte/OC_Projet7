@@ -26,7 +26,7 @@ def update_data(file_path):
     # Calcul de la valeur de l'action après bénéfice
 
         for action in actions_list:
-            if float(action['price']) >= 0 and float(action['profit']) >= 0:
+            if float(action['price']) > 0 and float(action['profit']) > 0:
                 action['profit'] = ((float(action['price'])) * (((float(action['profit'])))) / 100)
 
     # Mise à jour du csv
