@@ -1,67 +1,10 @@
-import csv
-import math
 import time
 import psutil
-
-# Fonction permettant de convertir le temps d'exécution de secondes en HH:MM:SS
-
-
-def convert(seconds):
-    ''' La fonction permet de convertir les secondes en HH/MM/SS/SSS afin d'avoir un timing plus clair '''
-    hours, remainder = divmod(seconds, 3600)
-    minutes, seconds = divmod(remainder, 60)
-    milliseconds = int((seconds - int(seconds)) * 1000)  # Extrait les millisecondes
-    return '%02d:%02d:%02d:%03d' % (hours, minutes, int(seconds), milliseconds)
-
-
-def update_actions(file_path):
-    actions_list = []
-    actions_updated = []
-
-    with open(file_path, 'r') as csv_file:
-        data = csv.DictReader(csv_file)
-        for row in data:
-            actions_list.append(dict(row))
-
-    # Calcul de la valeur de l'action après bénéfice
-
-    new_actions_list = []
-
-    for action in actions_list:
-        if float(action['price']) >= 0 and float(action['profit']) >= 0:
-            action['price'] = int((float(action['price'])) * 100)
-            action['profit'] = int(round(((((float(action['price'])) * ((float(action['profit'])))) / 100)) * 100, 2))
-            new_actions_list.append(action)
-
-    # Replace the original actions_list with the filtered list
-    actions_list = new_actions_list
-
-    fieldnames = ['name', 'price', 'profit']
-    file_path_new = file_path[:-4] + "result.csv"
-    with open(file_path_new, 'w', newline='') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerows(actions_list)
-
-    with open(file_path_new, 'r') as csv_file:
-        data = csv.DictReader(csv_file)
-        for row in data:
-            actions_updated.append(dict(row))
-
-    return actions_updated
-
-
-def nombre_combinaisons(n):
-    # Variables
-    total_combinations = 0
-    # Fonction
-    for k in range(2, n + 1):
-        combinations = math.comb(n, k)
-        total_combinations += combinations
-    return total_combinations
+from modules import general
 
 
 def dynamique_best_combinaisons(actions_updated, budget_max):
+    '''Utilisation de la programmation dynamique pour déterminer directement la meilleure combinaison'''
     # Convertir les clés du dictionnaire en une liste d'actions
     actions_list = list(actions_updated)
     # Obtenir le nombre d'actions
@@ -106,6 +49,7 @@ def dynamique_best_combinaisons(actions_updated, budget_max):
 
 
 def profit_cout_combinaison(actions_list, budget_max):
+    '''Permet de retrouver le coût et le bénéfice de la meilleure combinaison'''
     optimal_combination = dynamique_best_combinaisons(actions_list, budget_max)
 
     cout_total = 0
@@ -125,6 +69,8 @@ def profit_cout_combinaison(actions_list, budget_max):
 
 
 def diplay_best_combination(file_path):
+    '''Programme qui permet d'afficher la meilleure combinaison, son coût, son bénéfice,
+    le temps d'éxécution du programme ainsi que la mémoire utilisée'''
     # Variables
     budget_max = 500 * 100
     # Fonction
@@ -132,7 +78,7 @@ def diplay_best_combination(file_path):
     print("Début du programme")
 
     start = time.time()
-    actions_list = update_actions(file_path)
+    actions_list = general.update_actions(file_path)
     best_combinaison, max_profit, cout_total = profit_cout_combinaison(actions_list, budget_max)
 
     print("La meilleure combinaison est la suivante:\n", best_combinaison)
@@ -141,4 +87,4 @@ def diplay_best_combination(file_path):
     process = psutil.Process()
     print(f"Utilisation de la mémoire : {process.memory_info().rss / (1024 * 1024):.2f} MiB")
     end_time = (time.time() - start)
-    print("Fin du programme: ", convert(end_time))
+    print("Fin du programme: ", general.convert(end_time))
