@@ -1,7 +1,41 @@
 import time
 import psutil
+import csv
 
 from modules import general
+
+
+def update_data_BF(file_path):
+    actions_list = []
+    actions_updated = []
+
+    with open(file_path, 'r') as csv_file:
+        data = csv.DictReader(csv_file)
+        for row in data:
+            actions_list.append(dict(row))
+
+    # Calcul de la valeur de l'action après bénéfice
+
+        for action in actions_list:
+            if float(action['price']) > 0 and float(action['profit']) > 0:
+                action['profit'] = ((float(action['price'])) * (((float(action['profit'])))) / 100)
+
+    # Mise à jour du csv
+
+    fieldnames = actions_list[0].keys()
+
+    file_path_new = file_path[:-4] + "result_BF.csv"
+    with open(file_path_new, 'w', newline='') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(actions_list)
+
+    with open(file_path_new, 'r') as csv_file:
+        data = csv.DictReader(csv_file)
+        for row in data:
+            actions_updated.append(dict(row))
+
+    return actions_updated
 
 
 def generate_combinations(actions_updated):
@@ -66,7 +100,7 @@ def diplay_best_combination(file_path):
 
     print("Début du programme")
     start = time.time()
-    actions_updated = general.update_actions(file_path)
+    actions_updated = update_data_BF(file_path)
     all_combinaison = generate_combinations(actions_updated)
     best_combinaison, max_profit, cout_total = meilleur_profit(all_combinaison, budget_max)
 
