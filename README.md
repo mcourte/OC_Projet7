@@ -1,5 +1,10 @@
-# Livrable du Projet 7 Résolvez des problèmes en utilisant des algorithmes en Python 
-
+# Livrable du Projet 7 Résolvez des problèmes en utilisant des algorithmes en Python  
+  
+***Compétences acquises lors de la réalisation de ce projet:***  
+  
+*1. Déconstruire un problème*  
+*2. Développer un algorithme pour résoudre un problème*  
+  
 ## Etape 1 : Télécharger le code
 
 Cliquer sur le bouton vert "<> Code" puis sur Download ZIP.  
