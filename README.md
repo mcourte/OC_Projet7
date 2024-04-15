@@ -1,4 +1,4 @@
-# Livrable du Projet 7 Résolvez des problèmes en utilisant des algorithmes en Python  
+# Projet 7 Résolvez des problèmes en utilisant des algorithmes en Python  
   
 ***Compétences acquises lors de la réalisation de ce projet:***  
   
