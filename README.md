@@ -4,7 +4,15 @@
   
 *1. Déconstruire un problème*  
 *2. Développer un algorithme pour résoudre un problème*  
-  
+
+## But du projet :
+
+Créer des algorithmes afin de calculer la meilleure combinaison d'action (rapport coût/profit).  
+Deux types d'algorithmes à créer : 
+* un bruteforce qui détermine l'ensemble des combinaisons.
+* Un optimized permettant de calculer au fur et à mesure la meilleure combinaison.  
+
+
 ## Etape 1 : Télécharger le code
 
 Cliquer sur le bouton vert "<> Code" puis sur Download ZIP.  
